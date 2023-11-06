@@ -1,0 +1,32 @@
+name: ci
+
+on:
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: npm ci
+      
+      - name: Lint code
+        run: npm run lint
+
+      - name: Run Tests
+        run: npm test
+        working-directory: src
