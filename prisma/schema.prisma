@@ -19,5 +19,21 @@ model User {
   phone String  @unique
   hash  String
 
+  items Item[]
+
   @@map("users")
+}
+
+model Item {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  description String
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  @@map("items")
 }
