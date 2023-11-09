@@ -8,6 +8,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -40,8 +41,8 @@ export class ItemController {
   }
 
   @Get()
-  getItems() {
-    return this.itemService.getItems();
+  getItems(@Query('search') searchQuery: string) {
+    return this.itemService.getItems(searchQuery);
   }
 
   @Get(':id')

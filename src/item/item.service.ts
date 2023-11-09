@@ -35,8 +35,15 @@ export class ItemService {
     });
   }
 
-  async getItems() {
-    return this.prismaService.item.findMany();
+  async getItems(searchQuery: string) {
+    return this.prismaService.item.findMany({
+      where: {
+        name: {
+          contains: searchQuery,
+          mode: 'insensitive',
+        },
+      },
+    });
   }
 
   async getItemById(id: number) {
