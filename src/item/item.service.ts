@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateItemDto } from './dto';
 
@@ -27,5 +31,19 @@ export class ItemService {
         id: itemId,
       },
     });
+  }
+
+  async getItems() {
+    return this.prismaService.item.findMany();
+  }
+
+  async getItemById(id: number) {
+    const item = await this.prismaService.item.findUnique({ where: { id } });
+
+    if (!item) {
+      throw new NotFoundException();
+    }
+
+    return item;
   }
 }
