@@ -10,8 +10,10 @@ import { CreateItemDto } from './dto';
 export class ItemService {
   constructor(private prismaService: PrismaService) {}
 
-  async createItem(userId: number, dto: CreateItemDto) {
-    const item = this.prismaService.item.create({ data: { userId, ...dto } });
+  async createItem(userId: number, createItemDto: CreateItemDto) {
+    const item = await this.prismaService.item.create({
+      data: { userId, ...createItemDto },
+    });
 
     return item;
   }
