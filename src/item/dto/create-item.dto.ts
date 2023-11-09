@@ -12,6 +12,10 @@ export class CreateItemDto {
   description: string;
 
   @ApiProperty()
+  @IsString()
+  price: string;
+
+  @ApiProperty()
   @IsUrl()
   @IsOptional()
   imageUrl?: string;

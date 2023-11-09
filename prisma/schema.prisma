@@ -32,6 +32,7 @@ model Item {
   name        String
   description String
   imageUrl    String?
+  price       String  @default("0.00")
 
   userId Int
   user   User @relation(fields: [userId], references: [id])
