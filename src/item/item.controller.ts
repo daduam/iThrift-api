@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   HttpCode,
   HttpStatus,
   Param,
@@ -28,10 +29,20 @@ export class ItemController {
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  deleteBookmarkById(
+  deleteItemById(
     @CurrentUser('id') userId: number,
     @Param('id', ParseIntPipe) itemId: number,
   ) {
     return this.itemService.deleteItemById(userId, itemId);
+  }
+
+  @Get()
+  getItems() {
+    return this.itemService.getItems();
+  }
+
+  @Get(':id')
+  getItemById(@Param('id', ParseIntPipe) id: number) {
+    return this.itemService.getItemById(id);
   }
 }
