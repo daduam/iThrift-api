@@ -20,11 +20,14 @@ import { ItemService } from './item.service';
 @ApiTags('items')
 @Controller('items')
 export class ItemController {
-  constructor(private itemService: ItemService) {}
+  constructor(private readonly itemService: ItemService) {}
 
   @Post()
-  createItem(@CurrentUser('id') userId: number, @Body() dto: CreateItemDto) {
-    return this.itemService.createItem(userId, dto);
+  createItem(
+    @CurrentUser('id') userId: number,
+    @Body() createItemDto: CreateItemDto,
+  ) {
+    return this.itemService.createItem(userId, createItemDto);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)

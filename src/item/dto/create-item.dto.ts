@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class CreateItemDto {
   @ApiProperty()
@@ -10,4 +10,9 @@ export class CreateItemDto {
   @ApiProperty()
   @IsString()
   description: string;
+
+  @ApiProperty()
+  @IsUrl()
+  @IsOptional()
+  imageUrl?: string;
 }
