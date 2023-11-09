@@ -47,11 +47,16 @@ export class ItemService {
   }
 
   async getItemById(id: number) {
-    const item = await this.prismaService.item.findUnique({ where: { id } });
+    const item = await this.prismaService.item.findUnique({
+      where: { id },
+      include: { user: true },
+    });
 
     if (!item) {
       throw new NotFoundException();
     }
+
+    delete item.user.hash;
 
     return item;
   }
