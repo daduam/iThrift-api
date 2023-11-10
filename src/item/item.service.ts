@@ -43,6 +43,13 @@ export class ItemService {
           mode: 'insensitive',
         },
       },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+      },
     });
   }
 
