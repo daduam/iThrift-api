@@ -1,25 +1,22 @@
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import * as Bytescale from '@bytescale/sdk';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import nodeFetch from 'node-fetch';
 
 @Injectable()
 export class UploadService {
-  private readonly s3Client = new S3Client({
-    region: this.configService.getOrThrow('AWS_S3_REGION'),
+  private readonly uploadManager = new Bytescale.UploadManager({
+    apiKey: this.configService.getOrThrow('BYTESCALE_API_KEY'),
+    fetchApi: nodeFetch as any,
   });
 
   constructor(private readonly configService: ConfigService) {}
 
   async upload(fileName: string, file: Buffer) {
-    const command = new PutObjectCommand({
-      Bucket: this.configService.getOrThrow('AWS_S3_BUCKET'),
-      Key: fileName,
-      Body: file,
+    const { fileUrl } = await this.uploadManager.upload({
+      data: file,
+      originalFileName: fileName,
     });
-
-    const fileUrl = await getSignedUrl(this.s3Client, command);
-
     return { fileUrl };
   }
 }
