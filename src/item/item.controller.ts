@@ -8,13 +8,14 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CurrentUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
-import { CreateItemDto } from './dto';
+import { CreateItemDto, UpdateItemDto } from './dto';
 import { ItemService } from './item.service';
 
 @UseGuards(JwtGuard)
@@ -48,5 +49,14 @@ export class ItemController {
   @Get(':id')
   getItemById(@Param('id', ParseIntPipe) id: number) {
     return this.itemService.getItemById(id);
+  }
+
+  @Put(':id')
+  updateItem(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateItemDto: UpdateItemDto,
+    @CurrentUser('id') userId: number,
+  ) {
+    return this.itemService.updateItem(id, userId, updateItemDto);
   }
 }
